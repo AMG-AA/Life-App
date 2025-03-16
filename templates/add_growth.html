@@ -1,0 +1,85 @@
+{% extends "index.html" %}
+
+{% block title %}Add Growth Data{% endblock %}
+
+{% block main %}
+<div class="container" style="padding-top: 10px;">
+    <h2> Add Growth Data</h2>
+    
+    <form id="growth-form" action="/add_growth" method="post">
+        <div class="mb-3">
+            {% if baby %}
+            <p>Baby Name: {{ baby.first_name }} </p>
+            <p>Birth Date: {{ baby.birth_date }}</p>
+            <input type="hidden" id="birth_date" name="birth_date" value="{{ baby.birth_date }}">
+            {% else %}
+            <label for="date">Date:</label>
+            <input type="date" class="form-control" id="date" name="date" required>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="year">Year:</label>
+            <select class="form-control" id="year" name="year" required>
+                <option value="" disabled selected>Select a year</option>
+                {% for year in years %}
+                <option value="{{ year }}">{{ year }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            <label for="month">Month:</label>
+            <select class="form-control" id="month" name="month" required>
+                <option value="" disabled selected>Select a month</option>
+                <option value="1">Jan</option>
+                <option value="2">Feb</option>
+                <option value="3">Mar</option>
+                <option value="4">Apr</option>
+                <option value="5">May</option>
+                <option value="6">Jun</option>
+                <option value="7">Jul</option>
+                <option value="8">Aug</option>
+                <option value="9">Sep</option>
+                <option value="10">Oct</option>
+                <option value="11">Nov</option>
+                <option value="12">Dec</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="weight">Weight (Kg):</label>
+            <select name="weight" id="weight" class="form-control" required>
+                <option value="" disabled selected>Select a weight</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="height">Height (cm):</label>
+            <select name="height" id="height" class="form-control" required>
+                <option value="" disabled selected>Select a height</option>
+            </select>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<!-- Agregamos un input oculto para almacenar los datos de JSON -->
+<input type="hidden" id="ranges-json-data" value='{{ ranges_json|safe }}'>
+
+<style>
+    .form-control {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background: url('data:image/svg+xml;utf8,<svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5H7z" fill="currentColor"/></svg>') no-repeat right 10px center;
+        background-size: 16px 16px;
+        padding-right: 30px;
+    }
+</style>
+
+<!-- Enlace al archivo JS -->
+<script src="/static/JS/Month-validation.js"></script>
+
+{% endblock %}

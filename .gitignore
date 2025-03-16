@@ -1,0 +1,21 @@
+# Ignorar archivos de base de datos
+LIFE.db
+
+# Ignorar archivos de sesiones de Flask
+flask_session/
+
+# Ignorar archivos de compilación de Python
+__pycache__/
+
+# Ignorar archivos de zona de seguridad de Windows
+Zone.Identifier
+
+# Ignorar archivos de configuración de IDEs o editores (si estás usando uno)
+.vscode/
+.idea/
+
+# Ignorar archivos de entorno virtual de Python
+venv/
+
+# Ignorar archivos de structure
+structure.md

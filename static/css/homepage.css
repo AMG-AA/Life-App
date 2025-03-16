@@ -1,0 +1,97 @@
+.alert {
+    font-size: 1.1rem;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.header {
+    background-color: #0066cc;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+.header ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.header a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.content {
+    padding: 20px;
+}
+
+.section-overview, .section-shortcuts, .section-updates {
+    margin-bottom: 30px;
+}
+
+.section-overview #graph-container {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+}
+
+button {
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #004080;
+    transform: scale(1.05);
+}
+
+.pastel-name {
+    display: inline;
+}
+
+.pastel-name .letter {
+    font-size: 1em;
+    display: inline; /* Usar inline en lugar de inline-block */
+    margin: 0;
+    padding: 0;
+}
+
+
+.pastel-name .letter:nth-child(1) { color: #FFB3BA; } /* pastel pink */
+.pastel-name .letter:nth-child(2) { color: #FFDFBA; } /* pastel orange */
+.pastel-name .letter:nth-child(3) { color: #FFFFBA; } /* pastel yellow */
+.pastel-name .letter:nth-child(4) { color: #BAFFC9; } /* pastel green */
+.pastel-name .letter:nth-child(5) { color: #BAE1FF; } /* pastel blue */
+.pastel-name .letter:nth-child(6) { color: #E1BAFF; } /* pastel purple */
+.pastel-name .letter:nth-child(7) { color: #F7B5D4; } /* pastel pink for the 7th letter */
+.pastel-name .letter:nth-child(8) { color: #FFAA99; } /* another pastel color */
+/* Add more colors if needed */
+
+/* Banner */
+.banner {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

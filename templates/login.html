@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/static/css/hero.css">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/headers/">
+
+    <link href="/staticfavicon.ico" rel="icon">
+    
+
+<link href="/static/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<main> 
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <header class="mb-auto">
+            <div class="d-flex flex-column align-items-center">
+                <h3 class="mb-0">Life</h3>
+                <nav class="nav nav-masthead justify-content-center">
+                    <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="/">Home</a>
+                    <a class="nav-link fw-bold py-1 px-0" href="#">Features</a>
+                    <a class="nav-link fw-bold py-1 px-0" href="#">Contact</a>
+                    <a class="nav-link fw-bold py-1 px-0" href="/register">Register</a>
+                </nav>
+            </div>
+        </header>
+    </div>
+    <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+        <div class="row align-items-center g-lg-5 py-5">
+            <div class="col-lg-7 text-center ">
+                <h1 class="display-4 fw-bold lh-1 mb-3 text-lg-start">Life</h1>
+                <p class="col-lg-start fs-4 text-lg-start">Login to your account to keep tracking your baby's activities.</p>
+            </div>
+            <div class="col-md-10 mx-auto col-lg-5">
+                <form action="/login" method="post" class="p-4 p-md-5 border rounded-3 bg-ligth back">
+                    <div class="form-floating mb-3">
+                        <input autocomplete="off" type="username" class="form-control" id="username" name="username" placeholder="username" required>
+                        <label for="username">Username</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                        <label for="password">Password</label>
+                    </div>
+                    <div class="checkbox mb-3">
+                        <label>
+                            <input type="checkbox" value="remember-me"> Remember me
+                        </label>
+                    </div>
+                    <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                    <hr class="my-4">
+                    <small class="text-muted">By clicking Sign Up, you agree to the terms of use.</small>
+                </form>
+            </div>
+        </div>
+</div>
+
+</main>
+
+<footer class="py-3 my-4">
+<ul class="nav justify-content-center border-bottom pb-3 mb-3" id="text-footer">
+    <li class="nav-item"><a href="/" class="nav-link px-2 text-black">Home</a></li>
+    <li class="nav-item"><a href="#" class="nav-link px-2 text-black">Features</a></li>
+    <li class="nav-item"><a href="#" class="nav-link px-2 text-black">FAQs</a></li>
+    <li class="nav-item"><a href="#" class="nav-link px-2 text-black">About</a></li>
+</ul>
+<p class="text-center text-muted">&copy; 2025 Life, Inc</p>
+</footer>
+<script src="/static/assets/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

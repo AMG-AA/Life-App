@@ -1,0 +1,69 @@
+{% extends "index.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/homepage.css') }}">
+{% endblock %}
+
+{% block main %}
+<div class="container my-5">
+    <!-- Dinamic header -->
+    <div class="jumbotron text-center bg-light py-4">
+        {% if baby %}
+        <h1 class="display-4">Welcome back, {{ user }}!<br> Here's the growth progress for 
+            <span class="pastel-name" id="baby-name">
+                {% if baby.first_name %}
+                    {{ baby.first_name }}
+                {% else %}
+                    No baby name available.
+                {% endif %}
+            </span>
+        </h1>
+        {% else %}
+        <h1 class="display-4">Welcome, {{ user }}!</h1>
+        <p class="lead">Get started by adding your baby's details to track their growth!</p>
+        {% endif %}
+
+        <div class="banner">
+            <p id="rotating-banner">Welcome to LIFE - Supporting you every step of the way.</p>
+        </div>
+    </div>
+
+    <main class="content">
+        <section class="section-overview">
+            <h2>Overview</h2>
+            <div id="graph-container">
+                <canvas id="growth-chart"></canvas>
+                <p id="no-data-message" style="display: none; text-align: center;">Looks like you haven't added any growth data yet.<br> Click the button below to get started!</p>
+            </div>
+        </section>
+
+        <section class="section-shortcuts">
+            <h2>Quick Actions</h2>
+            <button onclick="window.location.href='/baby'">Add Baby Details</button>
+            <button onclick="window.location.href='/goals'">Set a New Goal</button>
+            <button onclick="window.location.href='/add_growth'">Add Growth Data</button>
+        </section>
+
+        <section class="section-updates">
+            <h2>Latest Updates</h2>
+            <ul id="updates-list">
+                {% if updates %}
+                    {% for update in updates %}
+                        <li>{{ update.title }} - {{ update.description }}</li>
+                    {% endfor %}
+                {% else %}
+                    <li>No updates available yet. Stay tuned!</li>
+                {% endif %}
+            </ul>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script src="/static/JS/script.js"></script>
+</div>
+{% endblock %}

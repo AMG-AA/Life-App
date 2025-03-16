@@ -1,0 +1,4 @@
+flask
+werkzeug
+pip install python-dateutil
+pip install numpy

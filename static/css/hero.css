@@ -1,0 +1,222 @@
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  @media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+    }
+  }
+
+  .b-example-divider {
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+  }
+
+  .b-example-vr {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 100vh;
+  }
+
+  .bi {
+    vertical-align: -.125em;
+    fill: currentColor;
+  }
+
+  .nav-scroller {
+    position: relative;
+    z-index: 2;
+    height: 2.75rem;
+    overflow-y: hidden;
+  }
+
+  .nav-scroller .nav {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .back {
+    background-color: #dbdbdb32;
+  }
+
+  .fixed-top {
+    background-color: #f8f9faf1;
+  }
+
+  /*
+ * Header
+ */
+
+.nav-masthead .nav-link {
+  color: rgba(110, 110, 110, 0.5);
+  border-bottom: .25rem solid transparent;
+}
+
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+  border-bottom-color: rgba(255, 255, 255, .25);
+}
+
+.nav-masthead .nav-link + .nav-link {
+  margin-left: 1rem;
+}
+
+.nav-masthead .active {
+  color: #424242;
+  border-bottom-color: #fff;
+}
+.nav-item {
+  color: rgba(32, 38, 222, 0.797);
+}
+
+/*
+ * Chatbot 
+*/
+
+
+/* Chatbot container */
+#chatbot-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+/* Chatbot button open/close*/
+#chatbot-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 15px;
+  cursor: pointer;
+  font-size: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Chatbot button open/close hover */
+#chatbot-button:hover {
+  background-color: #0056b3;
+}
+
+/* Chatbot button open/close focus */
+#chatbot-button:focus {
+  outline: none;
+}
+
+/* Chatbot button open/close active */
+#chatbot-button:active {
+  background-color: #0056b3;
+} /*/
+
+/* Chatbot window */
+#chatbot-window {
+  display: none; /* Inicialmente está oculta */
+  position: absolute;
+  bottom: 60px;
+  right: 0;
+  width: 300px;
+  height: 400px; /* Altura fija para evitar el redimensionamiento */
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 1050;
+}
+
+/* Chatbot header */
+#chatbot-header {
+  background-color: #007bff;
+  color: white;
+  padding: 3px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 1100;
+}
+
+
+/* Chatbot header close button */
+#close-chatbot {
+  background-color: transparent; /* Transparent background */
+  color: f!important; /* White text */
+  border: none;
+  border-radius: 20%; /* Rounded corners */
+  padding: 5px; /* Smaller padding */
+  cursor: pointer;
+  font-size: 15px; /* Increase font size */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+/* Chatbot header close button hover */
+#close-chatbot:hover {
+  /* background-color: rgba(255, 255, 255, 0.477); Semi-transparent gray background */
+  transform: scale(1.1); /* Slightly increase size on hover */
+}
+
+/* Chatbot header close button focus */
+#close-chatbot:focus {
+  outline: none; /* Remove default focus outline */
+}
+
+/* Chatbot header close button active */
+#close-chatbot:active {
+  background-color: rgba(128, 128, 128, 0.7); /* Slightly darker gray on active */
+  transform: scale(1.05); /* Slightly reduce size on active */
+}
+
+/* Message area */
+#chatbot-messages {
+  flex: 1; 
+  padding: 10px;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+  height: 100%; /* Ajuste de altura para evitar que el input lo cubra */
+}
+
+/* Text input area */
+#chatbot-input {
+  display: flex;
+  border-top: 1px solid #ddd;
+  height: 40px; /* Define una altura fija para el área de input */
+  justify-content: space-between;
+  align-items: center;
+}
+
+#chatbot-input input {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  height: 40px; /* Asegura que el input no cambie de tamaño */
+  box-sizing: border-box; /* Asegura que el padding no afecte la altura */
+}
+
+#chatbot-input button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  height: 40px; /* Asegura que el botón tenga un tamaño adecuado */
+}
+
