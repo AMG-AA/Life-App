@@ -16,9 +16,14 @@ from database.db_setup import get_db, close_connection
 import requests
 
 
+# Configuración mejorada del modo debug
 app = Flask(__name__)
-app.debug = True  # Activar modo debug
-app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.config.update(
+    DEBUG=True,
+    TEMPLATES_AUTO_RELOAD=True,
+    SEND_FILE_MAX_AGE_DEFAULT=0,
+    ENV="development"
+)
 app.jinja_env.auto_reload = True
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -331,14 +336,14 @@ def get_growth_data():
     return jsonify({"has_data": has_data, "data": data})
 
 
-# Define the base directory
+# Define the base directory - Solución al problema de rutas absolutas
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Define the paths to the JSON files
-boys_weight_file = os.path.join(BASE_DIR, "/home/amg_aa/projects/178139299/project3//static/JS/json/boys_weight_for_age_percentiles.json")
-boys_height_file = os.path.join(BASE_DIR, "/home/amg_aa/projects/178139299/project3//static/JS/json/boys_height_for_age_percentiles.json")
-girls_weight_file = os.path.join(BASE_DIR, "/home/amg_aa/projects/178139299/project3//static/JS/json/girls_weight_for_age_percentiles.json")
-girls_height_file = os.path.join(BASE_DIR, "/home/amg_aa/projects/178139299/project3//static/JS/json/girls_height_for_age_percentiles.json")
+# Define the paths to the JSON files con rutas relativas
+boys_weight_file = os.path.join(BASE_DIR, "static/JS/json/boys_weight_for_age_percentiles.json")
+boys_height_file = os.path.join(BASE_DIR, "static/JS/json/boys_height_for_age_percentiles.json")
+girls_weight_file = os.path.join(BASE_DIR, "static/JS/json/girls_weight_for_age_percentiles.json")
+girls_height_file = os.path.join(BASE_DIR, "static/JS/json/girls_height_for_age_percentiles.json")
 
 
 @app.route("/add_growth", methods=["GET", "POST"])
@@ -521,9 +526,10 @@ def logout():
     return redirect("/")
 
 
-# Initialize the server
+# Initialize the server con configuración para recarga automática
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Importante: use_reloader=True asegura la recarga automática
+    app.run(debug=True, use_reloader=True, host='0.0.0.0')
 
 
 @app.teardown_appcontext
