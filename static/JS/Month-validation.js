@@ -55,6 +55,42 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function validateForm() {
+        const year = parseInt(document.getElementById('year').value);
+        const ymonth = parseInt(document.getElementById('month').value);
+        const weight = parseInt(document.getElementById('weight').value);
+        const height = parseInt(document.getElementById('height').value);
+
+        // Validate mandatory fields
+        if (!year || !month || !weight || !height) {
+            alert('All fields are mandatory');
+            return false;
+        }
+        
+
+        // Validate no future dates
+        const selectedDate = new Date(year, month - 1, 1);
+        const currentDate = new Date();
+        if (selectedDate > currentDate) {
+            alert('You cannot select a future date');
+            return false;
+        }
+
+        // Validate no past dates
+        if (selectedDate < birthDate) {
+            alert('You cannot select a date before your birth date');
+            return false;
+        }
+
+        return true;
+    }
+
+    document.getElementById('growth-form').addEventListener('submit', function(event) {
+        if (!validateForm()) {
+            event.preventDefault();
+        }
+    });
+
     yearSelect.addEventListener('change', updateMonths);
     monthSelect.addEventListener('change', updateRanges);
 

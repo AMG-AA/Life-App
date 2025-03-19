@@ -6,6 +6,8 @@ Home
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage.css') }}">
+<!-- Agregar iconos de Bootstrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 {% endblock %}
 
 {% block main %}
@@ -28,42 +30,131 @@ Home
         {% endif %}
 
         <div class="banner">
-            <p id="rotating-banner">Welcome to LIFE - Supporting you every step of the way.</p>
+            <p id="rotating-banner" class="banner-text">Welcome to LIFE - Supporting you every step of the way.</p>
         </div>
     </div>
 
     <main class="content">
-        <section class="section-overview">
-            <h2>Overview</h2>
-            <div id="graph-container">
-                <canvas id="growth-chart"></canvas>
-                <p id="no-data-message" style="display: none; text-align: center;">Looks like you haven't added any growth data yet.<br> Click the button below to get started!</p>
+        
+        <!-- Cards con sistema grid para mejor organización -->
+        <div class="row g-4 mb-4">
+            <!-- Quick Actions Card con colores personalizados -->
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-custom-gradient-1">
+                        <h2 class="h4 mb-0 card-header-text"><i class="bi bi-lightning-fill card-icon"></i>Quick Actions</h2>
+                    </div>
+                    <div class="card-body d-grid gap-3">
+                        <button class="btn btn-custom btn-outline-custom-primary" onclick="confirmAction('Add Baby', 'Are you sure you want to add baby details?', '/baby', 'bi-plus-circle')">
+                            <i class="bi bi-plus-circle me-2"></i>Add Baby Details
+                        </button>
+                        <button class="btn btn-custom btn-outline-custom-secondary" onclick="confirmAction('Set Goal', 'Do you want to set a new goal?', '/goals', 'bi-flag')">
+                            <i class="bi bi-flag me-2"></i>Set a New Goal
+                        </button>
+                        <button class="btn btn-custom btn-outline-custom-accent" onclick="confirmAction('Growth Data', 'Ready to add new growth data?', '/add_growth', 'bi-graph-up')">
+                            <i class="bi bi-graph-up me-2"></i>Add Growth Data
+                        </button>
+                    </div>
+                </div>
             </div>
-        </section>
-
-        <section class="section-shortcuts">
-            <h2>Quick Actions</h2>
-            <button onclick="window.location.href='/baby'">Add Baby Details</button>
-            <button onclick="window.location.href='/goals'">Set a New Goal</button>
-            <button onclick="window.location.href='/add_growth'">Add Growth Data</button>
-        </section>
-
-        <section class="section-updates">
-            <h2>Latest Updates</h2>
-            <ul id="updates-list">
-                {% if updates %}
-                    {% for update in updates %}
-                        <li>{{ update.title }} - {{ update.description }}</li>
-                    {% endfor %}
-                {% else %}
-                    <li>No updates available yet. Stay tuned!</li>
-                {% endif %}
-            </ul>
-        </section>
+            
+            <!-- Overview Card con colores personalizados -->
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-custom-gradient-1">
+                        <h2 class="h4 mb-0 card-header-text"><i class="bi bi-bar-chart-fill card-icon"></i>Overview</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="graph-container" class="graph-container">
+                            <canvas id="growth-chart"></canvas>
+                            <p id="no-data-message" style="display: none;" class="no-data-message">
+                                <i class="bi bi-exclamation-circle fs-1 d-block mb-3"></i>
+                                Looks like you haven't added any growth data yet.<br>
+                                Click the button below to get started!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Updates Card con colores personalizados -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-custom-gradient-2">
+                <h2 class="h4 mb-0 card-header-text"><i class="bi bi-bell-fill card-icon"></i>Latest Updates</h2>
+            </div>
+            <div class="card-body">
+                <ul id="updates-list" class="list-group list-group-flush">
+                    {% if updates %}
+                        {% for update in updates %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ update.title }} - {{ update.description }}
+                                <span class="badge badge-custom badge-custom-primary rounded-pill">New</span>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <li class="list-group-item text-center text-muted">
+                            <i class="bi bi-hourglass me-2"></i>No updates available yet. Stay tuned!
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
     </main>
 
+    <!-- Scripts existentes -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <script src="/static/JS/script.js"></script>
+    
+    <script>
+        /**
+         * Función reutilizable para mostrar un modal de confirmación
+         * @param {string} title - El título de la acción
+         * @param {string} message - El mensaje de confirmación
+         * @param {string} redirectUrl - La URL a la que redirigir si se confirma
+         * @param {string} iconClass - Clase de Bootstrap Icon (opcional)
+         */
+        function confirmAction(title, message, redirectUrl, iconClass = 'bi-question-circle') {
+            // Crear modal dinámicamente con parámetros personalizados
+            const modal = `
+                <div class="modal fade modal-custom" id="confirmActionModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Confirm ${title}</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="modal-p"><i class="bi ${iconClass} modal-icon"></i> ${message}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-confirm" onclick="window.location.href='${redirectUrl}'">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Eliminar cualquier modal existente antes de añadir uno nuevo
+            const existingModal = document.getElementById('confirmActionModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+            
+            // Añadir el modal al DOM
+            document.body.insertAdjacentHTML('beforeend', modal);
+            
+            // Mostrar el modal
+            const modalElement = new bootstrap.Modal(document.getElementById('confirmActionModal'));
+            modalElement.show();
+            
+            // Eliminar el modal del DOM cuando se cierre
+            document.getElementById('confirmActionModal').addEventListener('hidden.bs.modal', function() {
+                this.remove();
+            });
+        }
+    </script>
 </div>
 {% endblock %}

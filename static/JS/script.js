@@ -268,7 +268,7 @@ fetch('/get_growth_data')
                             }
                         },
                         y: {
-                            beginAtZero: true,
+                            beginAtZero: false, // Iniciar el eje Y desde el valor más bajo
                             title: {
                                 display: true,
                                 text: 'Baby Growth (cm)'
