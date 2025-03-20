@@ -243,6 +243,7 @@
 
                     <button class="w-100 btn btn-primary btn-lg" type="submit">Continue</button>
                 </form>
+                <button class="w-100 btn btn-danger btn-lg mt-2" onclick="confirmAction('Cancel', 'Are you sure you want to cancel add baby details?', '/', 'bi-plus-circle')">Cancel</button>
             </div>
         </div>
     </main>
@@ -261,8 +262,55 @@
 </div>
 
         <script src="/static/assets/dist/js/bootstrap.bundle.min.js"></script>
-
         <script src="/static/JS/form-validation.js"></script>
+        <script>
+            /**
+             * Función reutilizable para mostrar un modal de confirmación
+             * @param {string} title - El título de la acción
+             * @param {string} message - El mensaje de confirmación
+             * @param {string} redirectUrl - La URL a la que redirigir si se confirma
+             * @param {string} iconClass - Clase de Bootstrap Icon (opcional)
+             */
+            function confirmAction(title, message, redirectUrl, iconClass = 'bi-question-circle') {
+                // Crear modal dinámicamente con parámetros personalizados
+                const modal = `
+                    <div class="modal fade modal-custom" id="confirmActionModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Confirm ${title}</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="modal-p"><i class="bi ${iconClass} modal-icon"></i> ${message}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Continue</button>
+                                    <button type="button" class="btn btn-danger" onclick="window.location.href='${redirectUrl}'">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Eliminar cualquier modal existente antes de añadir uno nuevo
+                const existingModal = document.getElementById('confirmActionModal');
+                if (existingModal) {
+                    existingModal.remove();
+                }
+                
+                // Añadir el modal al DOM
+                document.body.insertAdjacentHTML('beforeend', modal);
+                
+                // Mostrar el modal
+                const modalElement = new bootstrap.Modal(document.getElementById('confirmActionModal'));
+                modalElement.show();
+                
+                // Eliminar el modal del DOM cuando se cierre
+                document.getElementById('confirmActionModal').addEventListener('hidden.bs.modal', function() {
+                    this.remove();
+                });
+            }
+        </script>
     </body>
-
 </html>
