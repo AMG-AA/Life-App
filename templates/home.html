@@ -15,7 +15,7 @@ Home
     <!-- Dinamic header -->
     <div class="jumbotron text-center bg-light py-4">
         {% if baby %}
-        <h1 class="display-4">Welcome back, {{ user }}!<br> Here's the growth progress for 
+        <h1 class="display-4">Hello, {{ user }}!<br> Here's the growth progress for 
             <span class="pastel-name" id="baby-name">
                 {% if baby.first_name %}
                     {{ baby.first_name }}
@@ -41,18 +41,18 @@ Home
             <!-- Quick Actions Card con colores personalizados -->
             <div class="col-md-6">
                 <div class="card shadow-sm h-100">
-                    <div class="card-header bg-custom-gradient-1">
+                    <div class="card-header bg-custom-gradient-2">
                         <h2 class="h4 mb-0 card-header-text"><i class="bi bi-lightning-fill card-icon"></i>Quick Actions</h2>
                     </div>
                     <div class="card-body d-grid gap-3">
-                        <button class="btn btn-custom btn-outline-custom-primary" onclick="confirmAction('Add Baby', 'Are you sure you want to add baby details?', '/baby', 'bi-plus-circle')">
-                            <i class="bi bi-plus-circle me-2"></i>Add Baby Details
+                        <button class="btn btn-custom btn-outline-custom-accent" onclick="confirmAction('Growth Data', 'Ready to add new growth data?', '/add_growth', 'bi-graph-up')">
+                            <i class="bi bi-graph-up me-2"></i>Add Growth Data
                         </button>
                         <button class="btn btn-custom btn-outline-custom-secondary" onclick="confirmAction('Set Goal', 'Do you want to set a new goal?', '/goals', 'bi-flag')">
                             <i class="bi bi-flag me-2"></i>Set a New Goal
                         </button>
-                        <button class="btn btn-custom btn-outline-custom-accent" onclick="confirmAction('Growth Data', 'Ready to add new growth data?', '/add_growth', 'bi-graph-up')">
-                            <i class="bi bi-graph-up me-2"></i>Add Growth Data
+                        <button class="btn btn-custom btn-outline-custom-primary" onclick="confirmAction('Add Baby', 'Are you sure you want to add baby details?', '/baby', 'bi-plus-circle')">
+                            <i class="bi bi-plus-circle me-2"></i>Add Baby Details
                         </button>
                     </div>
                 </div>
@@ -61,7 +61,7 @@ Home
             <!-- Overview Card con colores personalizados -->
             <div class="col-md-6">
                 <div class="card shadow-sm h-100">
-                    <div class="card-header bg-custom-gradient-1">
+                    <div class="card-header bg-custom-gradient-2">
                         <h2 class="h4 mb-0 card-header-text"><i class="bi bi-bar-chart-fill card-icon"></i>Overview</h2>
                     </div>
                     <div class="card-body">
@@ -70,7 +70,7 @@ Home
                             <p id="no-data-message" style="display: none;" class="no-data-message">
                                 <i class="bi bi-exclamation-circle fs-1 d-block mb-3"></i>
                                 Looks like you haven't added any growth data yet.<br>
-                                Click the button below to get started!
+                                Click <a href="/add_growth" class="text-decoration-none">here</a> to get started!
                             </p>
                         </div>
                     </div>

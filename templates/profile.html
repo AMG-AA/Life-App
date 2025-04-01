@@ -1,0 +1,156 @@
+{% extends "index.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block main %}
+<div class="container" style="padding-top: 10px;">
+    <h2>Profile</h2>
+
+    <!-- User Profile Form -->
+    <form id="profile-form" action="/profile" method="post" onsubmit="return validateUserForm()">
+        <input type="hidden" name="form_type" value="user_update">
+        <h3>User Information</h3>
+        <div class="mb-3">
+            <label for="first_name">Username:</label>
+            <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user[0] }}" 
+                pattern="[A-Za-z0-9_\-.]+" title="Letters, numbers, underscores, dots and hyphens are allowed" 
+                maxlength="30" required>
+            <div class="invalid-feedback">Invalid username format.</div>
+            <small class="form-text text-muted">Username can contain letters, numbers, underscores, dots and hyphens.</small>
+        </div>
+
+        <div class="mb-3">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ user[1] }}" required>
+        </div>
+
+        <h4>Change Password</h4>
+        <div class="mb-3">
+            <label for="current_password">Current Password (required to change password):</label>
+            <input type="password" class="form-control" id="current_password" name="current_password">
+        </div>
+
+        <div class="mb-3">
+            <label for="new_password">New Password:</label>
+            <input type="password" class="form-control" id="new_password" name="new_password">
+        </div>
+
+        <div class="mb-3">
+            <label for="confirm_password">Confirm New Password:</label>
+            <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+    </form>
+
+    <hr>
+
+    <!-- Baby Management Section -->
+    <h3>Baby Information</h3>
+    {% for baby in babies %}
+    <form action="/profile" method="post" class="mb-4 baby-form" onsubmit="return validateBabyForm(this)">
+        <input type="hidden" name="form_type" value="baby_update">
+        <input type="hidden" name="baby_id" value="{{ baby[0] }}">
+        <div class="mb-3">
+            <label for="baby_first_name_{{ baby[0] }}">First Name:</label>
+            <input type="text" class="form-control" id="baby_first_name_{{ baby[0] }}" name="baby_first_name" 
+                value="{{ baby[1] }}" pattern="[A-Za-zÁáÉéÍíÓóÚúÜüÑñ ]+" title="Please enter only letters" required>
+            <div class="invalid-feedback">First name must contain only letters.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="baby_last_name_{{ baby[0] }}">Last Name:</label>
+            <input type="text" class="form-control" id="baby_last_name_{{ baby[0] }}" name="baby_last_name" 
+                value="{{ baby[2] }}" pattern="[A-Za-zÁáÉéÍíÓóÚúÜüÑñ ]+" title="Please enter only letters" required>
+            <div class="invalid-feedback">Last name must contain only letters.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="baby_birth_date_{{ baby[0] }}">Birth Date:</label>
+            <input type="date" class="form-control" id="baby_birth_date_{{ baby[0] }}" name="baby_birth_date" 
+                value="{{ baby[3] }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="baby_gender">Gender:</label>
+            <select class="form-control" id="baby_gender" name="baby_gender" disabled>
+                <option selected>{{ baby[4] }}</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">Update Baby</button>
+    </form>
+    <form action="/delete_baby/{{ baby[0] }}" method="post" style="display: inline;">
+        <button type="submit" class="btn btn-danger">Delete Baby</button>
+    </form>
+    {% endfor %}
+
+    <a href="/baby" class="btn btn-primary">Add New Baby</a>
+</div>
+
+<script>
+function validateUserForm() {
+    let isValid = true;
+    const firstName = document.getElementById('first_name');
+    
+    // Validar formato de nombre de usuario: letras, números, guiones, puntos y guiones bajos
+    if (!/^[A-Za-z0-9_\-.]+$/.test(firstName.value.trim())) {
+        firstName.classList.add('is-invalid');
+        isValid = false;
+    } else {
+        firstName.classList.remove('is-invalid');
+    }
+    
+    // Validación de contraseña (solo si se intenta cambiar)
+    const currentPassword = document.getElementById('current_password');
+    const newPassword = document.getElementById('new_password');
+    const confirmPassword = document.getElementById('confirm_password');
+    
+    if (newPassword.value || confirmPassword.value) {
+        if (!currentPassword.value) {
+            currentPassword.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            currentPassword.classList.remove('is-invalid');
+        }
+        
+        if (newPassword.value !== confirmPassword.value) {
+            newPassword.classList.add('is-invalid');
+            confirmPassword.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            newPassword.classList.remove('is-invalid');
+            confirmPassword.classList.remove('is-invalid');
+        }
+    }
+    
+    return isValid;
+}
+
+function validateBabyForm(form) {
+    let isValid = true;
+    
+    // Obtener los campos de nombre y apellido del formulario específico
+    const firstName = form.querySelector('[name="baby_first_name"]');
+    const lastName = form.querySelector('[name="baby_last_name"]');
+    
+    // Validar que el nombre solo contenga letras
+    if (!/^[A-Za-zÁáÉéÍíÓóÚúÜüÑñ ]+$/.test(firstName.value.trim())) {
+        firstName.classList.add('is-invalid');
+        isValid = false;
+    } else {
+        firstName.classList.remove('is-invalid');
+    }
+    
+    // Validar que el apellido solo contenga letras
+    if (!/^[A-Za-zÁáÉéÍíÓóÚúÜüÑñ ]+$/.test(lastName.value.trim())) {
+        lastName.classList.add('is-invalid');
+        isValid = false;
+    } else {
+        lastName.classList.remove('is-invalid');
+    }
+    
+    return isValid;
+}
+</script>
+{% endblock %}

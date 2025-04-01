@@ -118,6 +118,113 @@ def baby():
     return render_template("baby.html")
 
 
+@app.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    """View and update user profile"""
+    user_id = session["user_id"]
+    db = get_db()
+    cursor = db.cursor()
+    
+    if request.method == "POST":
+        form_type = request.form.get("form_type")
+        
+        # Handle user profile update
+        if form_type == "user_update":
+            first_name = request.form.get("first_name")
+            email = request.form.get("email")
+            current_password = request.form.get("current_password")
+            new_password = request.form.get("new_password")
+            confirm_password = request.form.get("confirm_password")
+
+            # Validación del nombre de usuario (solo letras)
+            # Validación del nombre de usuario (letras, números, guiones, etc.)
+            import re
+            if not re.match(r'^[A-Za-z0-9_\-.]+$', first_name):
+                flash("Username can contain only letters, numbers, underscores, dots and hyphens", "error")
+                return redirect("/profile")
+            
+            # Validate current password if trying to change password
+            if new_password:
+                # First verify current password
+                cursor.execute("SELECT password FROM users WHERE id = ?", (user_id,))
+                stored_hash = cursor.fetchone()[0]
+                
+                if not check_password_hash(stored_hash, current_password):
+                    flash("Current password is incorrect", "error")
+                    return redirect("/profile")
+                
+                # Then check if new passwords match
+                if new_password != confirm_password:
+                    flash("New passwords do not match", "error")
+                    return redirect("/profile")
+                
+                # Update user data with new password
+                cursor.execute(
+                    "UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?",
+                    (first_name, email, generate_password_hash(new_password), user_id)
+                )
+            else:
+                # Update user data without changing password
+                cursor.execute(
+                    "UPDATE users SET username = ?, email = ? WHERE id = ?",
+                    (first_name, email, user_id)
+                )
+                
+            db.commit()
+            flash("User profile updated successfully!", "success")
+            
+        # Handle baby profile update
+        elif form_type == "baby_update":
+            baby_id = request.form.get("baby_id")
+            if baby_id:
+                baby_first_name = request.form.get("baby_first_name")
+                baby_last_name = request.form.get("baby_last_name")
+                baby_birth_date = request.form.get("baby_birth_date")
+
+                # Vadlidate baby names (only letters)
+                import re
+                if not re.match(r'^[A-Za-zÁáÉéÍíÓóÚúÜüÑñ ]+$', baby_first_name) or not re.match(r'^[A-Za-zÁáÉéÍíÓóÚúÜüÑñ ]+$', baby_last_name):
+                    flash("Baby names must contain only letters", "error")
+                    return redirect("/profile")
+
+                cursor.execute(
+                    "UPDATE babies SET first_name = ?, last_name = ?, birth_date = ? WHERE id = ? AND user_id = ?",
+                    (baby_first_name, baby_last_name, baby_birth_date, baby_id, user_id)
+                )
+                db.commit()
+                flash("Baby profile updated successfully!", "success")
+
+        return redirect("/profile")
+    
+    # Fetch user data
+    cursor.execute("SELECT username, email FROM users WHERE id = ?", (user_id,))
+    user_data = cursor.fetchone()
+
+    # Fetch baby data
+    cursor.execute("SELECT id, first_name, last_name, birth_date, gender FROM babies WHERE user_id = ?", (user_id,))
+    baby_data = cursor.fetchall()
+    
+    return render_template("profile.html", user=user_data, babies=baby_data)
+
+
+# Route to delete a baby
+@app.route("/delete_baby/<int:baby_id>", methods=["POST"])
+@login_required
+def delete_baby(baby_id):
+    """Delete a baby from the database"""
+    user_id = session["user_id"]
+    db = get_db()
+    cursor = db.cursor()
+
+    # Delete the baby from the database
+    cursor.execute("DELETE FROM babies WHERE id = ? AND user_id = ?", (baby_id, user_id))
+    db.commit()
+
+    flash("Baby deleted successfully!", "success")
+    return redirect("/profile")
+
+
 # Route to create a new user
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -140,27 +247,31 @@ def register():
             flash("Must provide email", "error")
             return redirect("/register")
 
-        # Checl if the user already exists
-        existing_user = db.execute("SELECT * FROM users WHERE username = ?", username)
+        # Check if the user already exists
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
+        existing_user = cursor.fetchone()
+        
         if existing_user:
             flash("Username already exists", "error")
             return redirect("/register")
 
         try:
-            # Register the new user if doesn't exist
-            db.execute(
+            # Register the new user
+            cursor.execute(
                 "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-                username,
-                email,
-                generate_password_hash(password)
+                (username, email, generate_password_hash(password))
             )
+            db.commit()
 
             # Retrieve the user's id
-            rows = db.execute("SELECT id FROM users WHERE username = ?", username)
-            session["user_id"] = rows[0]["id"]  # Guardar usuario en sesión
+            cursor.execute("SELECT id FROM users WHERE username = ?", (username,))
+            user_id = cursor.fetchone()[0]
+            session["user_id"] = user_id  # Store user in session
 
             flash("Registered successfully! Please provide baby details.", "success")
-            return redirect("/baby")  # Redirigir al formulario de datos del bebé
+            return redirect("/baby")  # Redirect to baby registration form
         
         except Exception as e:
             flash(f"An error occurred during registration: {str(e)}", "error")
